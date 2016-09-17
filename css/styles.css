@@ -1,0 +1,29 @@
+
+/* basic */
+.fl {
+	float: left;
+}
+.fr {
+	float: right;
+}
+.clr {
+	clear: both;
+}
+ul,li {
+	list-style-type: none;
+}
+
+/* styles */
+.cat {
+	width: 200px;
+	margin-right: 20px;
+}
+.cat-btn {
+	margin-right: 20px;
+}
+.catpic {
+	width: 100%;
+}
+.cat-show {
+	width: 400px;
+}
