@@ -49,13 +49,6 @@ $(() => {
 		setCurrCat(cat) {
 			model.currentCat = cat;
 		},
-		getCatDetail(key, refer, get) {
-			for (let elem of octopus.getAllCats()) {
-				if (elem[key] === refer) {
-					return elem[get];
-				}
-			}
-		},
 		addHits() {
 			model.currentCat.hits++;
 			viewOfDisplay.render();
