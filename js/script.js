@@ -1,14 +1,7 @@
 $(() => {
 
 	let model = {
-		addHits(currCatName) {
-			for (let elem of this.data()) {
-				if (elem.name === currCatName) {
-					elem.hits++;
-					console.log(elem);
-				}
-			}
-		},
+		currentCat: null,
 		data() {
 			return [
 				{
@@ -39,8 +32,22 @@ $(() => {
 	};
 
 	let octopus = {
+		init() {
+			// set the current cat to the first cat
+			model.currentCat = model.data()[0];
+
+			// initialize the views
+			viewOfList.init();
+			viewOfDisplay.init();
+		},
 		getAllCats() {
 			return model.data();
+		},
+		getCurrCat() {
+			return model.currentCat;
+		},
+		setCurrCat(cat) {
+			model.currentCat = cat;
 		},
 		getCatDetail(key, refer, get) {
 			for (let elem of octopus.getAllCats()) {
@@ -49,61 +56,68 @@ $(() => {
 				}
 			}
 		},
-		addCatHits(currCatName) {
-			model.addHits(currCatName);
-		},
-		init() {
-			viewOfList.init();
-			viewOfDisplay.init();
+		addHits() {
+			model.currentCat.hits++;
+			viewOfDisplay.render();
 		}
 	};
 
 	let viewOfList = {
 		init() {
 			this.catslist = $('#catslist');
-			let catsInfo = octopus.getAllCats();
-			for (let catInfo of catsInfo) {
-				let catBtns = $('<button />').text(catInfo.name).addClass('cat-btn');
-				catBtns.appendTo(this.catslist);
+			this.render();
+		},
+		render() {
+			// get cats
+			let cats = octopus.getAllCats();
+
+			// empty the cat list
+
+			// loop over the cats
+			for (let cat of cats) {
+
+				// make a list of buttons and set their text
+				let btn = $('<button />');
+				btn.text(cat.name);
+				btn.addClass('cat-btn');
+
+				// on click, setCurrentCat and render the ViewOfDisplay
+				// use closure-in-a-loop
+				btn.on('click', ((catCopy) => {
+					return () => {
+						octopus.setCurrCat(catCopy);
+						viewOfDisplay.render();
+					}
+				})(cat));
+
+				// add btns to the list
+				btn.appendTo(this.catslist);
 			}
 		}
 	};
 
 	let viewOfDisplay = {
 		init() {
-			let currCatSrc = octopus.getAllCats()[0].src;
-			$('#showarea .catpic').attr('src', currCatSrc);
+
+			// store pointers
+			this.catPicElem = $('#catpic');
+			this.counterElem = $('#counter');
+			this.catNameElem = $('#catname');
+
+			// on click, add the current cat's hits
+			this.catPicElem.on('click', () => {
+				octopus.addHits();
+			});
+
 			viewOfDisplay.render();
-			viewOfDisplay.showHits();
 		},
 		render() {
 
-			$('.cat-btn').on('click', (e) => {
-				let catName = $(e.target).text();
-				let currCatSrc = octopus.getCatDetail('name', catName, 'src');
-				$('#showarea .catpic').attr('src', currCatSrc);
-			});
+			let currentCat = octopus.getCurrCat();
+			this.counterElem.text(currentCat.hits);
+			this.catNameElem.text(currentCat.name);
+			this.catPicElem.attr('src', currentCat.src);
 
-		},
-		showHits() {
-			this.counterShow = $('#counterShow');
-
-			this.counterShow.text(0);
-
-			$('.cat-btn').on('click', (e) => {
-				let catName = $(e.target).text();
-
-				octopus.addCatHits(catName);
-
-				let currCatHits = octopus.getCatDetail('name', catName, 'hits');
-
-				this.counterShow.text(currCatHits);
-
-				// test
-				for (let elem of model.data()) {
-					console.log(elem.hits);
-				}
-			});
 		}
 	};
 
