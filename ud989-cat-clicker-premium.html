@@ -5,14 +5,27 @@
 	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<ul id="catslist">
+<div id="catslist">
 	<div class="clr"></div>
-</ul>
+</div>
 <div id="showarea" class="cat-show">
 	<img id="catpic" class="catpic" src="" alt="">
-	<span id="catname"></span>
-	<span id="counter"></span>
+	<h2 id="catname"></h2>
+	<h3 id="counter"></h3>
 </div>
+
+<button id="adminBtn">ADMIN</button>
+<form id="adminForm">
+	<label for="name">Name:</label>
+	<input id="name" type="text">
+	<label for="src">SRC:</label>
+	<input type="text" id="src">
+	<label for="hits">#hits</label>
+	<input type="text" id="hits">
+	<div class="btns">
+		<button id="save">Save</button>
+	</div>
+</form>
 <script src="https://cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
 <script src="js/script.js"></script>
 </body>

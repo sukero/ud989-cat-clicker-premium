@@ -27,3 +27,6 @@ ul,li {
 .cat-show {
 	width: 400px;
 }
+#adminForm, .btns {
+	margin-top: 20px;
+}
